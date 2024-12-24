@@ -2,10 +2,6 @@ const axios = require("axios");
 const cheerio = require("cheerio");
 const { Client } = require("@elastic/elasticsearch");
 
-//const client = new Client({
-//  node: "http://0.0.0.0:9200", // IPv4 adresi
-//});
-
 const esClient = new Client({ node: "http://127.0.0.1:9200" });
 
 const baseURL = "https://www.sozcu.com.tr";
@@ -20,11 +16,11 @@ async function crawlSozcu() {
 
     const filteredArticles = articles.filter((article) => article.title);
 
-    console.log("Çekilen Haberler:", filteredArticles);
+    console.log("Crawled articles:", filteredArticles);
 
     await saveToElasticsearch(filteredArticles);
   } catch (error) {
-    console.error("Crawl işlemi sırasında hata oluştu:", error.message);
+    console.error("Something went wrong:", error.message);
   }
 }
 
@@ -51,16 +47,15 @@ async function crawlLink($) {
 async function saveToElasticsearch(news) {
   try {
     for (const element of news) {
-      // Veriyi Elasticsearch'e kaydet
       await esClient.index({
-        index: "sozcu-news", // Elasticsearch dizin adı
-        document: element, // Kaydedilecek veri
+        index: "sozcu-news",
+        document: element,
       });
     }
-    console.log("Veriler Elasticsearch'e kaydedildi!");
+    console.log("Successfully saved.");
   } catch (error) {
     console.error(
-      "Elasticsearch'e veri kaydedilirken hata oluştu:",
+      "Error occurred while saving data to Elasticsearch:",
       error.message
     );
   }
@@ -71,19 +66,16 @@ async function saveToElasticsearch(news) {
 /*async function deleteAllFromElasticsearch(indexName) {
     try {
       const response = await esClient.deleteByQuery({
-        index: indexName, // Silmek istediğiniz dizin adı
+        index: indexName, 
         query: {
-          match_all: {}, // Tüm dokümanları seçer
+          match_all: {}, 
         },
       });
-      console.log(`Dizindeki tüm veriler silindi: ${indexName}`, response);
+      console.log(`Deleted: ${indexName}`, response);
     } catch (error) {
-      console.error(
-        `Elasticsearch'teki veriler silinirken hata oluştu (${indexName}):`,
-        error.message
-      );
+      console.error(error.message);
     }
   }
   
   // Kullanım:
-  deleteAllFromElasticsearch("sozcu-news"); // "sozcu-news" dizinindeki tüm verileri siler*/
+  deleteAllFromElasticsearch("sozcu-news"); 
