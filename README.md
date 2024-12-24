@@ -8,7 +8,6 @@ This project is a web scraping application that crawls news articles from the S�
 - Crawls news articles from the [Sözcü](https://www.sozcu.com.tr/) homepage.
 - Extracts article titles, URLs, and image URLs.
 - Saves the crawled articles to Elasticsearch.
-- Provides functionality for bulk deletion of data from the Elasticsearch index.
 
 ---
 
