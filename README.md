@@ -1,4 +1,4 @@
-# Sözcü News Crawler
+# Sözcü Article Crawler
 
 This project is a web scraping application that crawls news articles from the Sözcü website and stores them in an Elasticsearch index. It uses `axios` for HTTP requests, `cheerio` for HTML parsing, and the Elasticsearch Node.js client for interacting with Elasticsearch.
 
